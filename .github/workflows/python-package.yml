@@ -146,10 +146,10 @@ jobs:
     - name: Build archive
       run: |
         mkdir archive
-        NAME="competition-simulator-$(git describe --always --tags).zip"
+        export NAME="competition-simulator-$(git describe --always --tags).zip"
         ./script/create-archive --output archive/$NAME
     - name: Store archives
       uses: actions/upload-artifact@v2
       with:
-        name: ${{ env.NAME }}
-        path: archive/${{ env.NAME }}
+        name: archive
+        path: archive/*.zip
