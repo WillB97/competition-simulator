@@ -13,6 +13,7 @@ jobs:
   test:
     runs-on: ubuntu-20.04
     strategy:
+      fail-fast: false
       matrix:
         python-version: [3.7, 3.8, 3.9]
 
@@ -22,6 +23,27 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+    - name: Build checksum file
+      run: |
+        declare -a FILES=(
+          "script/linting/requirements.txt"
+          "script/typing/requirements.txt"
+        )
+        for f in ${FILES[@]}
+        do
+          echo "# $f" >> all-requirements.txt
+          cat $f >> all-requirements.txt
+        done
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: venv
+        key: deps-py${{ matrix.python-version }}-${{ hashfiles('all-requirements.txt') }}
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        python3 -m venv venv
+        venv/bin/pip install -r all-requirements.txt
     - name: Test with unittest
       run: |
         ./script/testing/test
@@ -38,10 +60,27 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: Build checksum file
       run: |
-        python -m pip install --upgrade pip
-        pip install -r script/linting/requirements.txt
+        declare -a FILES=(
+          "script/linting/requirements.txt"
+          "script/typing/requirements.txt"
+        )
+        for f in ${FILES[@]}
+        do
+          echo "# $f" >> all-requirements.txt
+          cat $f >> all-requirements.txt
+        done
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: venv
+        key: deps-py${{ matrix.python-version }}-${{ hashfiles('all-requirements.txt') }}
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        python3 -m venv venv
+        venv/bin/pip install -r all-requirements.txt
     - name: Lint with flake8
       run: |
         # Ignore TODOs on CI, for now, even though we do want them
@@ -60,11 +99,47 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: Build checksum file
       run: |
-        python -m pip install --upgrade pip
-        pip install -r script/typing/requirements.txt
+        declare -a FILES=(
+          "script/linting/requirements.txt"
+          "script/typing/requirements.txt"
+        )
+        for f in ${FILES[@]}
+        do
+          echo "# $f" >> all-requirements.txt
+          cat $f >> all-requirements.txt
+        done
+    - name: Cache dependencies
+      uses: actions/cache@v2
+      with:
+        path: venv
+        key: deps-py${{ matrix.python-version }}-${{ hashfiles('all-requirements.txt') }}
+    - name: Install Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
+      run: |
+        python3 -m venv venv
+        venv/bin/pip install -r all-requirements.txt
     - name: Typecheck with Mypy
       run: |
         ./script/typing/check $SCRIPTS
-    
+        
+  build:
+    runs-on: ubuntu-latest
+    needs: [test, lint, typecheck]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: Build archive
+      run: |
+        mkdir archive
+        NAME="competition-simulator-$(git describe --always --tags).zip"
+        ./script/create-archive --output archive/$NAME
+    - name: Store archives
+      uses: actions/upload-artifact@v2
+      with:
+        name: archive
+        path: archive
