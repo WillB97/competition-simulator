@@ -151,5 +151,5 @@ jobs:
     - name: Store archives
       uses: actions/upload-artifact@v2
       with:
-        name: archive
-        path: archive/*.zip
+        name: ${{ env.NAME }}
+        path: archive/${{ env.NAME }}
