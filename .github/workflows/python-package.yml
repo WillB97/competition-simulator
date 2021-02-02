@@ -43,9 +43,11 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
         python3 -m venv venv
+        venv/bin/pip install -U pip
         venv/bin/pip install -r all-requirements.txt
     - name: Test with unittest
       run: |
+        source venv/bin/activate
         ./script/testing/test
 
   lint:
@@ -80,9 +82,11 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
         python3 -m venv venv
+        venv/bin/pip install -U pip
         venv/bin/pip install -r all-requirements.txt
     - name: Lint with flake8
       run: |
+        source venv/bin/activate
         # Ignore TODOs on CI, for now, even though we do want them
         # highlighted in development.
         ./script/linting/lint $SCRIPTS --extend-ignore=T000
@@ -119,9 +123,11 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
         python3 -m venv venv
+        venv/bin/pip install -U pip
         venv/bin/pip install -r all-requirements.txt
     - name: Typecheck with Mypy
       run: |
+        source venv/bin/activate
         ./script/typing/check $SCRIPTS
         
   build:
