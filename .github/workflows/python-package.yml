@@ -149,6 +149,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
+      - name: Install dependencies
+        run: |
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update
+          apt-get install --yes zip python3.7-venv
       - name: Prepare team code archive
         run: |
           mkdir archives
