@@ -151,9 +151,10 @@ jobs:
         run: |
           echo ${{ github.workspace }}
           whoami
-          ls .
-          ls ~
+          pwd
+          ls -l .
           echo $HOME
+          ls -l ~
 
   build:
     runs-on: ubuntu-latest
