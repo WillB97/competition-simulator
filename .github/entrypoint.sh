@@ -1,7 +1,7 @@
 #!/bin/bash -ex
 export DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install --yes zip pulseaudio python3-venv
+apt-get install --yes zip python3-venv
 
 mkdir ~/archives
 cd ~/archives
