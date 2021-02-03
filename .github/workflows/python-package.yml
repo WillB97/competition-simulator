@@ -137,6 +137,9 @@ jobs:
 
   run-comp-match:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: /github/workspace/
     strategy:
       fail-fast: false
       matrix:
@@ -154,6 +157,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           apt-get update
           apt-get install --yes zip
+      - name: Change to code folder
       - name: Prepare team code archive
         run: |
           mkdir archives
