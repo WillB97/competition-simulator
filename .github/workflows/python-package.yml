@@ -19,33 +19,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
-    - name: Build checksum file
-      run: |
-        declare -a FILES=(
-          "script/linting/requirements.txt"
-          "script/typing/requirements.txt"
-        )
-        for f in ${FILES[@]}
-        do
-          echo "# $f" >> all-requirements.txt
-          cat $f >> all-requirements.txt
-        done
-    - name: Cache dependencies
-      id: cache-dep
-      uses: actions/cache@v2
-      with:
-        path: venv
-        key: deps-py${{ matrix.python-version }}-${{ hashfiles('all-requirements.txt') }}
-    - name: Install Dependencies
-      if: steps.cache-dep.outputs.cache-hit != 'true'
-      run: |
-        python3 -m venv venv
-        venv/bin/pip install -U pip
-        venv/bin/pip install -r all-requirements.txt
+    - uses: ./.github/actions/build-cache-deps.yml
     - name: Test with unittest
       run: |
         source venv/bin/activate
@@ -145,7 +119,7 @@ jobs:
       matrix:
         webots-version: ["R2020b-rev1", "R2021a"]
     container:
-      image: docker.pkg.github.com/cyberbotics/webots-docker/webots:${{ matrix.webots-version }}-ubuntu20.04
+      image: cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
