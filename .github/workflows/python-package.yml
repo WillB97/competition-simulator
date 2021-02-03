@@ -185,7 +185,9 @@ jobs:
       - name: Run match
         run: |
           source venv/bin/activate
-          xvfb-run script/run-comp-match archives 42 - ABC --duration 5 --no-record
+          #xvfb-run script/run-comp-match archives 42 - ABC --duration 5 --no-record
+          ls -l script
+          which webots-bin
       - name: Store archives
         uses: actions/upload-artifact@v2
         with:
