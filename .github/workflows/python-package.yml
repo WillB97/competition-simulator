@@ -150,21 +150,21 @@ jobs:
         run: |
           whoami
           echo $HOME
+          ls ~
           touch $HOME/testing
       - name: Docker whoami
         uses: docker://ubuntu:latest
         with:
           entrypoint: whoami
-      - name: Docker home
+      - name: Docker env
         uses: docker://ubuntu:latest
         with:
-          entrypoint: echo
-          args: $HOME
+          entrypoint: env
       - name: Docker home contents
         uses: docker://ubuntu:latest
         with:
           entrypoint: ls
-          args: $HOME
+          args: "~"
       - name: Docker df
         uses: docker://ubuntu:latest
         with:
