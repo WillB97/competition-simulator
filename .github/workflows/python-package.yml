@@ -144,7 +144,7 @@ jobs:
       matrix:
         webots-version: ["R2020b-rev1", "R2021a"]
     container:
-      image: cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
+      image: ubuntu:20.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -175,7 +175,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: venv
-          key: deps-library-${{ hashfiles('requirements.txt') }}
+          key: deps-library-${{ hashfiles('libraries.txt') }}
       - name: Install Libraries
         if: steps.cache-library.outputs.cache-hit != 'true'
         run: |
@@ -184,8 +184,9 @@ jobs:
           venv/bin/pip install -r libraries.txt
       - name: Run match
         run: |
-          source venv/bin/activate
-          #xvfb-run script/run-comp-match archives 42 - ABC --duration 5 --no-record
+          ls -l venv
+          ls -l venv/bin
+          source ./venv/bin/activate
           ls -l script
           which webots-bin
       - name: Store archives
