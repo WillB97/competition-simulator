@@ -143,6 +143,8 @@ jobs:
         working-directory: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v2
+      - name: Docker Layer Caching
+        uses: satackey/action-docker-layer-caching@v0.0.11
       - uses: docker://cyberbotics/webots:R2021a-ubuntu20.04
         with:
           entrypoint: ./.github/entrypoint.sh
