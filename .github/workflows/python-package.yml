@@ -182,7 +182,7 @@ jobs:
         run: |
           ls -l venv
           ls -l venv/bin
-          source ./venv/bin/activate
+          . ./venv/bin/activate
           ls -l script
           which webots-bin
       - name: Store archives
