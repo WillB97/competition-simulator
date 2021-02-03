@@ -141,12 +141,9 @@ jobs:
       run:
         shell: bash
         working-directory: ${{ github.workspace }}
-    strategy:
-      matrix:
-        webots-version: ["R2020b-rev1", "R2021a"]
     steps:
       - uses: actions/checkout@v2
-      - uses: docker://cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
+      - uses: docker://cyberbotics/webots:R2021a-ubuntu20.04
         with:
           entrypoint: ./.github/entrypoint.sh
       - name: find docker home
