@@ -27,9 +27,6 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
           sudo apt-get install --yes wget zip
-      - name: Download Webots
-        run: |
-          wget https://github.com/cyberbotics/webots/releases/download/R2020b-rev1/webots_2020b-rev1_amd64.deb -O ./webots.deb
       - name: Setup Webots apt cache
 #        run: |
 #          sudo apt-get install --yes xvfb ./webots.deb
@@ -39,10 +36,14 @@ jobs:
           path: ${{ runner.temp }}/apt-cache
           key: webots-apt-cache
 #          key: webots-apt-cache-${{ matrix.webots-version }}
+      - name: Download Webots
+        if: steps.cache-apt.outputs.cache-hit != 'true'
+        run: |
+          wget https://github.com/cyberbotics/webots/releases/download/R2020b-rev1/webots_2020b-rev1_amd64.deb -O ./webots.deb
       - name: Install Webots & Xvfb
         uses: airvzxf/cache-anything-new-action@v1.0.1
         with:
-          script: 'install-install.sh'
+          script: 'install-webots.sh'
           is_cached: ${{ steps.cache-apt.outputs.cache-hit }}
           cache: ${{ runner.temp }}/apt-cache
           snapshot: '/'
