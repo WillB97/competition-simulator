@@ -144,7 +144,7 @@ jobs:
       matrix:
         webots-version: ["R2020b-rev1", "R2021a"]
     container:
-      image: ubuntu:20.04
+      image: cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
