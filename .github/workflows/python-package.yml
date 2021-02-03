@@ -151,11 +151,9 @@ jobs:
           whoami
           echo $HOME
           ls -l ~
-          ls -l ~/work/_temp/_github_home
           ls -l ~/..
-          ls -l ~/work/_temp
+          ls -lR ~/work/
           touch $HOME/testing
-          touch ~/work/_temp/_github_home/alt_testing
       - name: Docker whoami
         uses: docker://ubuntu:latest
         with:
