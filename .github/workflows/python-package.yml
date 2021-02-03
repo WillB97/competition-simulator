@@ -151,18 +151,25 @@ jobs:
           whoami
           echo $HOME
           touch $HOME/testing
-      - uses: docker://ubuntu:latest
+      - name: Docker whoami
+        uses: docker://ubuntu:latest
         with:
           entrypoint: whoami
-      - uses: docker://ubuntu:latest
+      - name: Docker home
+        uses: docker://ubuntu:latest
         with:
-          entrypoint: echo $HOME
-      - uses: docker://ubuntu:latest
+          entrypoint: echo
+          args: $HOME
+      - name: Docker home contents
+        uses: docker://ubuntu:latest
         with:
-          entrypoint: ls $HOME
-      - uses: docker://ubuntu:latest
+          entrypoint: ls
+          args: $HOME
+      - name: Docker df
+        uses: docker://ubuntu:latest
         with:
-          entrypoint: df -h
+          entrypoint: df
+          args: -h
 #      - uses: docker://cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
 #        with:
 #          entrypoint: /.github/entrypoint.sh
