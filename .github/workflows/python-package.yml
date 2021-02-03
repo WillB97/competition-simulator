@@ -153,10 +153,16 @@ jobs:
           touch $HOME/testing
       - uses: docker://ubuntu:latest
         with:
-          entrypoint: |
-            whoami
-            echo $HOME
-            ls $HOME
+          entrypoint: whoami
+      - uses: docker://ubuntu:latest
+        with:
+          entrypoint: echo $HOME
+      - uses: docker://ubuntu:latest
+        with:
+          entrypoint: ls $HOME
+      - uses: docker://ubuntu:latest
+        with:
+          entrypoint: df -h
 #      - uses: docker://cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
 #        with:
 #          entrypoint: /.github/entrypoint.sh
