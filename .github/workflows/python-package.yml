@@ -147,11 +147,15 @@ jobs:
       image: cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
     steps:
       - uses: actions/checkout@v2
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
       - name: Install dependencies
         run: |
           export DEBIAN_FRONTEND=noninteractive
           apt-get update
-          apt-get install --yes zip python3-venv
+          apt-get install --yes zip
       - name: Prepare team code archive
         run: |
           mkdir archives
@@ -180,11 +184,8 @@ jobs:
           venv/bin/pip install -r libraries.txt
       - name: Run match
         run: |
-          ls -l venv
-          ls -l venv/bin
           . ./venv/bin/activate
-          ls -l script
-          which webots-bin
+          xvfb-run script/run-comp-match archives 42 - ABC --duration 5 --no-record
       - name: Store archives
         uses: actions/upload-artifact@v2
         with:
