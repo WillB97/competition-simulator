@@ -153,7 +153,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: archives
-          path: /home/runner/work/_temp_/_github_home/archives
+          path: /home/runner/work/_temp/_github_home/archives
 
   build:
     runs-on: ubuntu-latest
