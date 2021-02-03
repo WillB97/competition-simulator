@@ -147,15 +147,11 @@ jobs:
       image: cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
     steps:
       - uses: actions/checkout@v2
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
       - name: Install dependencies
         run: |
           export DEBIAN_FRONTEND=noninteractive
           apt-get update
-          apt-get install --yes zip
+          apt-get install --yes zip python3-venv
       - name: Prepare team code archive
         run: |
           mkdir archives
