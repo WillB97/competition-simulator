@@ -156,8 +156,8 @@ jobs:
       - name: Docker home contents
         uses: docker://ubuntu:latest
         with:
-          entrypoint: ls -l
-          args: /github/home
+          entrypoint: ls
+          args: -l /github/home
       - name: Docker add files
         uses: docker://ubuntu:latest
         with:
