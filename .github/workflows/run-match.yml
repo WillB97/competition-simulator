@@ -13,7 +13,7 @@ jobs:
       run:
         shell: bash
         working-directory: ${{ github.workspace }}
-     strategy:
+    strategy:
        matrix:
          webots-version: ["2020b-rev1", "2021a"]
     steps:
