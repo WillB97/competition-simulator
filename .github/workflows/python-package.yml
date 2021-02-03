@@ -146,35 +146,17 @@ jobs:
         webots-version: ["R2020b-rev1", "R2021a"]
     steps:
       - uses: actions/checkout@v2
-      - name: Try home dir
-        run: |
-          whoami
-          echo $HOME
-          ls -l ~
-          ls -lR ~/work/_temp
-          touch $HOME/testing
-      - name: Docker home contents
-        uses: docker://ubuntu:latest
+      - uses: docker://cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
         with:
-          entrypoint: ls
-          args: -l /github/home
-      - name: Docker add files
-        uses: docker://ubuntu:latest
-        with:
-          entrypoint: touch
-          args: /github/home/docker_test
-#      - uses: docker://cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
-#        with:
-#          entrypoint: /.github/entrypoint.sh
+          entrypoint: ./.github/entrypoint.sh
       - name: find docker home
         run: |
-          ls -l ~
-          ls -lR ~/work/_temp
+          ls -lR ~/work/_temp/_github_home
       - name: Store archives
         uses: actions/upload-artifact@v2
         with:
           name: archives
-          path: archives
+          path: ~/work/_temp_/_github_home/archives
 
   build:
     runs-on: ubuntu-latest
