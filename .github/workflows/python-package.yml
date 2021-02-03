@@ -151,30 +151,25 @@ jobs:
           whoami
           echo $HOME
           ls -l ~
-          ls -l ~/..
-          ls -lR ~/work/
+          ls -lR ~/work/_temp
           touch $HOME/testing
-      - name: Docker whoami
-        uses: docker://ubuntu:latest
-        with:
-          entrypoint: whoami
-      - name: Docker env
-        uses: docker://ubuntu:latest
-        with:
-          entrypoint: env
       - name: Docker home contents
         uses: docker://ubuntu:latest
         with:
-          entrypoint: ls
+          entrypoint: ls -l
           args: /github/home
-      - name: Docker df
+      - name: Docker add files
         uses: docker://ubuntu:latest
         with:
-          entrypoint: df
-          args: -h
+          entrypoint: touch
+          args: /github/home/docker_test
 #      - uses: docker://cyberbotics/webots:${{ matrix.webots-version }}-ubuntu20.04
 #        with:
 #          entrypoint: /.github/entrypoint.sh
+      - name: find docker home
+        run: |
+          ls -l ~
+          ls -lR ~/work/_temp
       - name: Store archives
         uses: actions/upload-artifact@v2
         with:
