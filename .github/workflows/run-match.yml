@@ -14,8 +14,8 @@ jobs:
         shell: bash
         working-directory: ${{ github.workspace }}
     strategy:
-       matrix:
-         webots-version: ["2020b-rev1", "2021a"]
+      matrix:
+        webots-version: ["2020b-rev1", "2021a"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
