@@ -150,8 +150,12 @@ jobs:
         run: |
           whoami
           echo $HOME
-          ls ~
+          ls -l ~
+          ls -l ~/work/_temp/_github_home
+          ls -l ~/..
+          ls -l ~/work/_temp
           touch $HOME/testing
+          touch ~/work/_temp/_github_home/alt_testing
       - name: Docker whoami
         uses: docker://ubuntu:latest
         with:
@@ -164,7 +168,7 @@ jobs:
         uses: docker://ubuntu:latest
         with:
           entrypoint: ls
-          args: "~"
+          args: /github/home
       - name: Docker df
         uses: docker://ubuntu:latest
         with:
