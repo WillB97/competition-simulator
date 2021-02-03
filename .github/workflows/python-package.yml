@@ -139,6 +139,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
+        shell: bash
         working-directory: ${{ github.workspace }}
     strategy:
       matrix:
@@ -184,7 +185,7 @@ jobs:
           venv/bin/pip install -r libraries.txt
       - name: Run match
         run: |
-          . ./venv/bin/activate
+          source ./venv/bin/activate
           xvfb-run script/run-comp-match archives 42 - ABC --duration 5 --no-record
       - name: Store archives
         uses: actions/upload-artifact@v2
