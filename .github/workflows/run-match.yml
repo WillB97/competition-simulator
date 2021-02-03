@@ -13,9 +13,9 @@ jobs:
       run:
         shell: bash
         working-directory: ${{ github.workspace }}
-#     strategy:
-#       matrix:
-#         webots-version: ["R2020b-rev1", "R2021a"]
+     strategy:
+       matrix:
+         webots-version: ["2020b-rev1", "2021a"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -27,28 +27,13 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
           sudo apt-get install --yes wget zip
-      - name: Setup Webots apt cache
-#        run: |
-#          sudo apt-get install --yes xvfb ./webots.deb
-        uses: actions/cache@v2
-        id: cache-apt
-        with:
-          path: ${{ runner.temp }}/apt-cache
-          key: webots-apt-cache
-#          key: webots-apt-cache-${{ matrix.webots-version }}
-
       - name: Download Webots
-        if: steps.cache-apt.outputs.cache-hit != 'true'
         run: |
-          wget https://github.com/cyberbotics/webots/releases/download/R2020b-rev1/webots_2020b-rev1_amd64.deb -O ./webots.deb
+          wget -O ./webots.deb \
+          https://github.com/cyberbotics/webots/releases/download/R${{ matrix.webots-version }}/webots_${{ matrix.webots-version }}_amd64.deb
       - name: Install Webots & Xvfb
-        uses: airvzxf/cache-anything-new-action@v1.0.1
-        with:
-          script: 'install-webots.sh'
-          is_cached: ${{ steps.cache-apt.outputs.cache-hit }}
-          cache: ${{ runner.temp }}/apt-cache
-          snapshot: '/'
-          exclude: '/boot /data /dev /mnt /proc /run /sys'
+        run: |
+          sudo apt-get install --yes xvfb ./webots.deb
       - name: Prepare team code archive
         run: |
           mkdir archives
