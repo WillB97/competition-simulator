@@ -9,7 +9,8 @@ cd ~/archives
 # Convert the sleep comments to print statement so there's a way to
 # gauge progress and so that Circle doesn't shut things down due to
 # lack of output (the latter is a theoretical concern).
-sed -r 's/# sleep(.*)/print("sleep\1")/' ../controllers/example_controller/example_controller.py > robot.py
+sed -r 's/# sleep(.*)/print("sleep\1")/' \
+  /github/workspace/controllers/example_controller/example_controller.py > robot.py
 
 # Have the robot code print success at the end, along with a unique identifier.
 echo "print('Success: $GITHUB_SHA')" >> robot.py
