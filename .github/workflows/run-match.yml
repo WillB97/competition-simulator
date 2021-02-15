@@ -10,7 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        webots-version: ["2020b-rev1", "2021a"]
+#         webots-version: ["2020b-rev1", "2021a"]
+        webots-version: ["2020b-rev1"]
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python 3.7
@@ -22,6 +23,7 @@ jobs:
           export DEBIAN_FRONTEND=noninteractive
           sudo apt-get update
           sudo apt-get install --yes wget zip pulseaudio xvfb
+          pulseaudio -D
       - name: Download Webots
         run: |
           wget -O ./webots.deb \
