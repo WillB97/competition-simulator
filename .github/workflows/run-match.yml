@@ -60,7 +60,7 @@ jobs:
       - name: Hide overlays
         run: |
           # pre-run webots to generate the config file
-          webots --sysinfo
+          xvfb-run webots --sysinfo
           sed --in-place '
             s/\(hideAllCameraOverlays\)=.*/\1=true/
             s/\(hideAllDisplayOverlays\)=.*/\1=true/
