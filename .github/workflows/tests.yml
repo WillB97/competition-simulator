@@ -37,7 +37,7 @@ jobs:
       if: matrix.test-os == 'windows-latest'
       run: |
         if ! command -v python3 &> /dev/null; then
-          sudo ln -s $(which python) /usr/bin/python3
+          ln -s $(which python) /usr/bin/python3
         fi
     - name: Cache dependencies
       uses: actions/cache@v2
