@@ -138,7 +138,7 @@ def get_recording_config() -> RecordingConfig:
     )
     if config is None:
         config = RecordingConfig(
-            Resolution(1280, 720),
+            Resolution(1920, 1080),
             quality=100,
         )
     return config
