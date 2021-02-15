@@ -36,7 +36,9 @@ jobs:
     - name: Patch Windows python3
       if: matrix.test-os == 'windows-latest'
       run: |
-        echo $PATH
+        if ! command -v python3 &> /dev/null; then
+          sudo ln -s $(which python) /usr/bin/python3
+        fi
     - name: Cache dependencies
       uses: actions/cache@v2
       id: cache-dep
