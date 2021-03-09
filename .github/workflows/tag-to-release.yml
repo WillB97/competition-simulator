@@ -2,7 +2,8 @@ name: Create release
 
 on:
   push:
-    tags: {}
+    tags:
+      - **
 
   make-release-from-tag:
     runs-on: ubuntu-latest
