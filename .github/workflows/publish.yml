@@ -1,6 +1,9 @@
 name: Publish simulator archive
 
 on:
+  push:
+    tags:
+      - '**'
   release:
     types: [ published ]
 
@@ -8,7 +11,8 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    # checkout@v1 must be used since v2 breaks tags
+    - uses: actions/checkout@v1
     - name: Set up Python 3.7
       uses: actions/setup-python@v2
       with:
@@ -20,6 +24,17 @@ jobs:
         NAME="competition-simulator-$(git describe --always --tags).zip"
         ./script/create-archive --output archive/$NAME
         echo "##[set-output name=archive;]$NAME"
+    - name: Get tag annotation
+      uses: ericcornelissen/git-tag-annotation-action@v1
+      id: tag_data
+    - name: Create release from tag
+      uses: ncipollo/release-action@v1
+      if: startsWith(github.ref, 'refs/tags')
+      with:
+        body: ${{ steps.tag_data.outputs.git-tag-annotation }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        # don't overwrite existing releases
+        allowUpdates: false
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v1-release
       with:
