@@ -3,7 +3,7 @@ name: Create release
 on:
   push:
     tags:
-      - **
+      - '**'
 
   make-release-from-tag:
     runs-on: ubuntu-latest
