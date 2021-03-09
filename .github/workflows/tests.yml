@@ -1,6 +1,5 @@
 name: Simulator tests
 
-# bump1
 on:
   push:
     branches:
