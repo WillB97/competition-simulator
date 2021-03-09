@@ -34,4 +34,4 @@ jobs:
         artifact: archive/${{ steps.build_archive.outputs.archive }}
         omitBodyDuringUpdate: true
         omitNameDuringUpdate: true
-        # replacesArtifacts: false
+        # replacesArtifacts: true
