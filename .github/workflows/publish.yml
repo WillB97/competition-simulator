@@ -4,8 +4,6 @@ on:
   push:
     tags:
       - '**'
-  release:
-    types: [ published ]
 
 jobs:
   publish:
@@ -27,18 +25,13 @@ jobs:
     - name: Get tag annotation
       uses: ericcornelissen/git-tag-annotation-action@v1
       id: tag_data
-    - name: Create release from tag
+    - name: Do release with binaries
       uses: ncipollo/release-action@v1
-      if: github.event_name == 'push'
       with:
-        body: ${{ steps.tag_data.outputs.git-tag-annotation }}
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: Upload binaries to release
-      uses: svenstaro/upload-release-action@v1-release
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: archive/${{ steps.build_archive.outputs.archive }}
-        asset_name: ${{ steps.build_archive.outputs.archive }}
-        tag: ${{ github.ref }}
-        overwrite: true
-
+        allowUpdates: true
+        body: ${{ steps.tag_data.outputs.git-tag-annotation }}
+        artifact: archive/${{ steps.build_archive.outputs.archive }}
+        omitBodyDuringUpdate: true
+        omitNameDuringUpdate: true
+        # replacesArtifacts: false
