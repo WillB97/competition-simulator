@@ -49,25 +49,16 @@ jobs:
         uses: actions/cache@v2
         with:
           path: venv
-          key: deps-library-${{ hashfiles('libraries.txt') }}
+          key: deps-library-${{ hashfiles('libraries.txt') }}-v2
       - name: Install Libraries
-        if: steps.cache-library.outputs.cache-hit != 'true'
         run: |
           python3 -m venv venv
           venv/bin/pip install -U pip
           venv/bin/pip install -r libraries.txt
-      - name: Hide overlays
-        run: |
-          # pre-run webots to generate the config file
-          xvfb-run webots --sysinfo
-          sed --in-place '
-            s/\(hideAllCameraOverlays\)=.*/\1=true/
-            s/\(hideAllDisplayOverlays\)=.*/\1=true/
-            ' ~/.config/Cyberbotics/Webots-*.conf
       - name: Run match
         run: |
           source ./venv/bin/activate
-          xvfb-run script/run-comp-match archives 42 - ABC --duration 5 --resolution 960 540
+          xvfb-run script/run-comp-match archives 42 - ABC --duration 5 --resolution 1280 720
       - name: Store archives
         uses: actions/upload-artifact@v2
         with:
