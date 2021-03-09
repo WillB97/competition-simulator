@@ -5,6 +5,7 @@ on:
     tags:
       - '**'
 
+jobs:
   make-release-from-tag:
     runs-on: ubuntu-latest
     steps:
